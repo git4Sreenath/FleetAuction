@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="auction_canceled_wizard_view_form" model="ir.ui.view">
+        <field name="name">auction.canceled.wizard.form</field>
+        <field name="model">auction.canceled.wizard</field>
+        <field name="arch" type="xml">
+            <form string="cancel">
+                <group class="oe_title">
+                    <!--                    <field name="auction_id" invisible="1"/>-->
+                    <field name="cancel_reason"/>
+                </group>
+
+                <footer>
+                    <button type="object" name="cancel_reason_from_wizard"
+                            class="btn btn-primary"
+                            string="SAVE"/>
+                    <button string="CANCEL" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <!--    <record id="test_model_wizard_action" model="ir.actions.act_window">-->
+    <!--        <field name="name">Test Model Wizard</field>-->
+    <!--        <field name="type">ir.actions.act_window</field>-->
+    <!--        <field name="res_model">test.model.wizard</field>-->
+    <!--        <field name="view_mode">form</field>-->
+    <!--        <field name="view_id" ref="test_model_wizard_view_form"/>-->
+    <!--        <field name="target">new</field>-->
+    <!--    </record>-->
+</odoo>

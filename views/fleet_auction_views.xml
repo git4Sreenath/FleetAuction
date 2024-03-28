@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fleet_auction_menu_action" model="ir.actions.act_window">
+        <field name="name">Fleet Auction</field>
+        <field name="res_model">fleet.auction</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_draftorongoing': 1}</field>
+    </record>
+    <menuitem id="fleet_auction_menu_root" name="Fleet Auction"
+              action="fleet_auction_menu_action"/>
+    <menuitem id="fleet_auction_first_level" name="Fleet Auction"
+              action="fleet_auction_menu_action"
+              parent="fleet_auction_menu_root" sequence="1"/>
+    <record id="fleet_auction_tree" model="ir.ui.view">
+        <field name="name">fleet</field>
+        <field name="model">fleet.auction</field>
+        <field name="arch" type="xml">
+            <tree string="Fleet Auction"
+                  decoration-warning="end_date == context_today().strftime('%Y-%m-%d')"
+                  default_order="id desc">
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="brand_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="user_id"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="fleet_auction_form" model="ir.ui.view">
+        <field name="name">fleet.auction.form</field>
+        <field name="model">fleet.auction</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,ongoing,success"/>
+                    <button name="action_confirm_auction" string="Confirm"
+                            type="object" class="oe_highlight" groups="fleet_auction.fleet_auction_manager_rights"
+                            invisible="state !='draft'"/>
+                    <button name="action_end_auction" string="End Auction"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_cancel_auction"
+                            string="Cancel Auction" type="object"
+                            class="btn-secondary"
+                            invisible="state !='confirmed' "/>
+                    <button name="action_stop_auction" string="Stop"
+                            type="object" class="oe_highlight"  groups="fleet_auction.fleet_auction_manager_rights"
+                            invisible="state !='confirmed' "/>
+                    <field name="invoice_or_not" invisible="1"/>
+                    <button name="action_create_invoice" class="oe_highlight"
+                            string="Create Invoice" type="object"
+                            invisible="state !='success' or
+                            invoice_or_not == True"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Archived"
+                            bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_bids_count" type="object"
+                                icon="fa-bell" class="oe_stat_button"
+                                invisible="state =='draft' or state =='cancelled'">
+                            <field name="bids_count" string="Bids"
+                                   widget="statinfo"/>
+                        </button>
+                        <button name="action_view_invoice" type="object"
+                                icon="fa-bell" class="oe_stat_button"
+                                string="Invoice" invisible="state !='success'">
+                        </button>
+                    </div>
+                    <field name="payment_state_after_register_payment"
+                           string="Payment_state" invisible="1"/>
+                    <widget name="web_ribbon" title="Paid"
+                            invisible="payment_state_after_register_payment
+                            !='paid'"/>
+                    <div>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                    </div>
+                    <h1 style="font-size: 36px;">
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="vehicle_id"/>
+                            <field name="brand_id"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="company_id"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="partner_id"
+                                   widget="res_partner_many2one"
+                                   context="{'show_address': 1}"
+                                   options='{"always_reload": True}'
+                                   invisible="state != 'success'"/>
+                            <field name="partner_email"
+                                   invisible="state != 'success' "/>
+                            <field name="partner_phone"
+                                   invisible="state != 'success' "/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="start_price" widget="monetary"/>
+                            <field name="won_price" widget="monetary"
+                                   invisible="state != 'success' "/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Confirmed Bid">
+                            <field name="confirmed_bid_ids">
+                                <tree create="0">
+                                    <field name="auction_id"/>
+                                    <field name="bid_amount"/>
+                                    <field name="bid_price"/>
+                                    <field name="bid_date"/>
+                                    <field name="phone_number"/>
+                                    <field name="state"/>
+                                    <field name="partner_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Expenses">
+                            <field name="expense_ids">
+                                <tree editable="bottom">
+                                    <field name="expense_product_id"
+                                           domain="[('detailed_type','=',
+                                           'service')]"/>
+                                    <field name="expense_amount"/>
+                                </tree>
+                            </field>
+                            <div style="margin-left:900px">
+                                <group>
+                                    <field name="total_expense"
+                                           widget="monetary"/>
+                                </group>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="fleet_auction_view_search" model="ir.ui.view">
+        <field name="name">fleet_auction_search</field>
+        <field name="model">fleet.auction</field>
+        <field name="arch" type="xml">
+            <search string="Tests">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <filter string="Start Date" name="start_date"/>
+                <filter string="Ongoing" name="ongoing"
+                        domain="[('state','=','ongoing')]"/>
+                <filter string="Draft or Ongoing" name="draftorongoing"
+                        domain="['|', ('state', '=', 'draft'), ('state', '=',
+                         'ongoing')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="State" name="state"
+                            context="{'group_by':'state'}"/>
+                    <filter string="Customer" name="partner_id"
+                            context="{'group_by':'partner_id'}"/>
+                </group>
+                <filter string="Archived" name="inactive"
+                        domain="[('active','=',False)]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

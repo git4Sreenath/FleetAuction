@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="user_confirmed_bid_only" model="ir.rule">
+        <field name="name">Users visible only confirmed bid</field>
+        <field ref="fleet_auction.model_auction_bid" name="model_id"/>
+        <field name="domain_force">[('state', '=','confirmed')]</field>
+        <field name="groups" eval="[(Command.link, ref('fleet_auction_user_access'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+        <record id="congratulation_email_template" model="mail.template">
+            <field name="name">Auction completed</field>
+            <field name="model_id" ref="fleet_auction.model_fleet_auction"/>
+            <field name="email_from">{{object.company_id.email}}</field>
+            <field name="email_to">{{object.partner_id.email}}</field>
+            <field name="subject">Successful completion of auction</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                        <h2>
+                            Dear,
+                            <t t-out="object.partner_id.name"/>
+                        </h2>
+                        <div>
+                            <h3>
+                               congratulations for completing  the auction <t t-out="object.name"/>
+                            </h3>
+                        </div>
+                    <br/>
+                    <br/>
+                    Regards,
+                    <br/>
+                    <t t-out="object.company_id.name"/>
+                    <br/>
+                </div>
+            </field>
+        </record>
+</odoo>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="bid_tree" model="ir.ui.view">
+        <field name="name">bid.tree</field>
+        <field name="model">auction.bid</field>
+        <field name="arch" type="xml">
+            <tree string="Bid">
+                <field name="auction_id"/>
+                <field name="bid_amount"/>
+                <field name="bid_price"/>
+                <field name="bid_date"/>
+                <field name="phone_number"/>
+                <field name="state"/>
+                <field name="partner_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="bid_form" model="ir.ui.view">
+        <field name="name">bid.form</field>
+        <field name="model">auction.bid</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed"/>
+                    <button name="action_confirm_bid" string="Confirm"
+                            type="object" class="oe_highlight"
+                            invisible="state !='draft'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="auction_id"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="company_id"/>
+                            <field name="bid_amount" widget="monetary"/>
+                            <field name="bid_price" widget="monetary"/>
+                            <field name="bid_date"/>
+                            <field name="phone_number"/>
+                            <field name="partner_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="bid_menu_action" model="ir.actions.act_window">
+        <field name="name">Bid</field>
+        <field name="res_model">auction.bid</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="bid_first_level_menu"
+            name="Bid"
+            action="bid_menu_action"
+            parent="fleet_auction_menu_root"
+            sequence="2"/>
+</odoo>

@@ -1,0 +1,9 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_fleet_auction,access_fleet.auction,model_fleet_auction,fleet_auction.fleet_auction_manager_rights,1,1,1,1
+access_fleet_auction_user,access_fleet.auction,model_fleet_auction,fleet_auction.fleet_auction_user_access,1,1,1,1
+access_auction_bid,access_auction.bid,model_auction_bid,fleet_auction.fleet_auction_manager_rights,1,1,1,1
+access_auction_bid_user,access_auction.bid,model_auction_bid,fleet_auction.fleet_auction_user_access,1,1,1,1
+access_expense_line,access_expense.line,model_expense_line,fleet_auction.fleet_auction_manager_rights,1,1,1,1
+access_expense_line_user,access_expense.line,model_expense_line,fleet_auction.fleet_auction_user_access,1,1,1,1
+access_auction_canceled_wizard,access_auction.canceled.wizard,model_auction_canceled_wizard,fleet_auction.fleet_auction_manager_rights,1,1,1,1
+access_auction_canceled_wizard,access_auction.canceled.wizard,model_auction_canceled_wizard,fleet_auction.fleet_auction_user_access,1,1,1,1
